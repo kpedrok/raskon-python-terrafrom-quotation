@@ -81,14 +81,32 @@ def quotation_range(ceps):
 
 def lambda_handler(event, context):
     print(event)
-    linhas_cep = [event['queryStringParameters']['cep']]
+    linhas_cep = [event['queryStringParameters']['destination_zip_code']]
     quotation_range(linhas_cep)
 
 
 lambda_handler({
     'queryStringParameters': {
-        'cep': '90480200',
-        'invoice_cost': '69,90',
-        'weight': '600',
+        "origin_zip_code": "90220060",
+        "volumes": [
+            {
+                "weight": 0.8,
+                "width": 16,
+                "cost_of_goods": 62.9,
+                "length": 26,
+                "height": 8,
+                "volume_type": "BOX"
+            }
+        ],
+        "platform": "OeF",
+        "client_id": 14085,
+        "additional_information": {
+            "sales_channel": "saidas",
+            "delivery_method_ids": [],
+            "sku_groups_ids": []
+        },
+        "destination_zip_code": "13484332",
+        "destination_uf": "RJ"
     }
 }, '')
+

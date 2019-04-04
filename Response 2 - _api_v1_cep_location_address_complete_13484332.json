@@ -1,0 +1,16 @@
+{
+	"timezone": "America/Sao_Paulo",
+	"messages": [],
+	"time": "0.1 ms",
+	"locale": "pt_BR",
+	"content": {
+		"city": "Limeira",
+		"street": "Rua Paschoal Marmo",
+		"ibge": "3526902",
+		"bairro": "Jardim Piratininga",
+		"state": "S?o Paulo",
+		"neighborhood": "Jardim Piratininga",
+		"state_short": "SP"
+	},
+	"status": "OK"
+}
