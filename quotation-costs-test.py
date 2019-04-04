@@ -16,17 +16,18 @@ import pandas as pd
 # print (df[df['Chave']=='CorreiosImpresso EconômicoSPMódico'].head())
 # peso = 1
 # df3 = df2[[peso]]
-# print (df3) 
+# print (df3)
+
 
 # ####### Encontrar preço a partir do peso e do método
 # peso = 0.75
 # df = pd.read_excel('consolidado.xlsx', sheet_name='costs')
 # df2 = df.set_index("Chave", drop = False)
 # price = df2.loc["CorreiosImpresso EconômicoSPMódico",peso]
-# print (price) 
+# print (price)
 
 
-####### Cotação total - Excel 
+# ###### Cotação total - Excel
 # df1 = pd.read_excel('consolidado.xlsx', sheet_name='costs')
 # df2 = pd.read_excel('consolidado.xlsx', sheet_name='range')
 # results = df2.merge(df1, on='Chave')
@@ -35,8 +36,9 @@ import pandas as pd
 # print (cotacao)
 
 
-####### Exportaçaõ do Resultado
+# ###### Exportaçaõ do Resultado
 # cotacao.to_excel('out.xlsx')
 
-#Verificar o tipo do header
+
+# ###Verificar o tipo do header
 # print (df.dtypes)

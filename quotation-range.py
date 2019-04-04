@@ -29,7 +29,6 @@ batches = {
 }
 
 
-
 def quotation_range(ceps):
     textfile = io.open(ARQUIVO_TRANSPORTADORA_CSV, 'r',
                        newline='', encoding='utf-8')
@@ -53,12 +52,12 @@ def quotation_range(ceps):
                 prazo = tokens[7]
                 if int(cep_inicial) <= int(ceps[indice_cep]) <= int(cep_final) and transportadora not in cep_por_transportadora:
                     batches[transportadora].append({
-                        "cep": str(ceps[indice_cep]),
+                        "cep": int(ceps[indice_cep]),
                         "transportadora": transportadora,
                         "metodo": metodo_envio,
                         "tarifa": tarifa,
                         "uf": uf,
-                        'prazo': prazo.replace("\r\n", ""),
+                        'prazo': int(prazo.replace("\r\n", "")),
                         'chave': transportadora + metodo_envio + uf + tarifa
                     })
 
@@ -70,17 +69,14 @@ def quotation_range(ceps):
     for transportadora in batches:
         if batches[transportadora] != []:
             quotation.append(batches[transportadora])
-            print (batches[transportadora])
+            print(batches[transportadora])
         else:
             pass
     # print (quotation)
     # print(json.dumps(quotation, indent=4, ensure_ascii=False, separators=(',', ': ')))
 
-    # print(json.dumps(batches, indent=4, ensure_ascii=False, separators=(',', ': ')))   
-    # print(batches)
-
-
-
+    # print(json.dumps(batches, indent=4, ensure_ascii=False, separators=(',', ': ')))
+    print(batches)
 
 
 def lambda_handler(event, context):
