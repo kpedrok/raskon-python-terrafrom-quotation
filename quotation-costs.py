@@ -8,7 +8,7 @@ def quotation_cost(quotation_range):
     key = quotation_range['transportadora'] + quotation_range['metodo'] + \
         quotation_range['uf'] + quotation_range['tarifa']
     # print(key)
-    peso = 2
+    peso = 1
     df = pd.read_excel('consolidado.xlsx', sheet_name='costs')
     df2 = df.set_index("Chave", drop=False)
     price = df2.loc[key, peso]
