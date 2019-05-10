@@ -8,14 +8,6 @@
 		"valor": 8.55
 	},
 	{
-		"transportadora": "Transfolha",
-		"metodo": "Transfolha Terrestre",
-		"uf": "RS",
-		"tarifa": "CAP",
-		"peso": 4,
-		"valor": 21.66
-	},
-	{
 		"transportadora": "Azul Cargo",
 		"metodo": "Azul Cargo Express",
 		"uf": "AL",
@@ -13675,9 +13667,25 @@
 		"transportadora": "Transfolha",
 		"metodo": "Transfolha Terrestre",
 		"uf": "RS",
+		"tarifa": "CAP",
+		"peso": 0.25,
+		"valor": 6.12
+	},
+	{
+		"transportadora": "Transfolha",
+		"metodo": "Transfolha Terrestre",
+		"uf": "RS",
 		"tarifa": "INT",
 		"peso": 0.25,
 		"valor": 7.65
+	},
+	{
+		"transportadora": "Transfolha",
+		"metodo": "Transfolha Terrestre",
+		"uf": "RS",
+		"tarifa": "INT 1",
+		"peso": 0.25,
+		"valor": 9.19
 	},
 	{
 		"transportadora": "Transfolha",
@@ -14622,14 +14630,6 @@
 		"tarifa": "CAP",
 		"peso": 1.5,
 		"valor": 12.08
-	},
-	{
-		"transportadora": "Transfolha",
-		"metodo": "Transfolha Terrestre",
-		"uf": "RS",
-		"tarifa": "INT 1",
-		"peso": 0.25,
-		"valor": 9.19
 	},
 	{
 		"transportadora": "Transfolha",
@@ -15587,6 +15587,14 @@
 		"transportadora": "Transfolha",
 		"metodo": "Transfolha Terrestre",
 		"uf": "RS",
+		"tarifa": "CAP",
+		"peso": 4,
+		"valor": 21.66
+	},
+	{
+		"transportadora": "Transfolha",
+		"metodo": "Transfolha Terrestre",
+		"uf": "RS",
 		"tarifa": "INT",
 		"peso": 4,
 		"valor": 27.08
@@ -15838,14 +15846,6 @@
 		"tarifa": "INT 1",
 		"peso": 5,
 		"valor": 38.26
-	},
-	{
-		"transportadora": "Transfolha",
-		"metodo": "Transfolha Terrestre",
-		"uf": "RS",
-		"tarifa": "CAP",
-		"peso": 0.25,
-		"valor": 6.12
 	},
 	{
 		"transportadora": "Transfolha",

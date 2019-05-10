@@ -2,7 +2,7 @@ import json
 
 
 def lambda_handler(event, context):
-    cep = "90480200"
+    cep = "01311300"
     with open('quotation-coverage\coverage.json', encoding='utf-8') as f:
         cep = int(cep)
         data = json.load(f)
