@@ -1,8 +1,18 @@
 import json
+import decimal
 
 
-def lambda_handler(event, context):
-    cep = "01311300"
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            if o % 1 > 0:
+                return float(o)
+            else:
+                return int(o)
+        return super(DecimalEncoder, self).default(o)
+
+
+def get_coverage(cep):
     with open('quotation-coverage\coverage.json', encoding='utf-8') as f:
         cep = int(cep)
         data = json.load(f)
@@ -14,6 +24,23 @@ def lambda_handler(event, context):
                 abrang_tranps.append(i)
         print(json.dumps(abrang_tranps, sort_keys=False,
                          indent=4, ensure_ascii=False))
+    return {
+        "statusCode": 200,
+        'headers': {
+            'Access-Control-Allow-Origin': '*'
+        },
+        "body": json.dumps(abrang_tranps, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
+    }
 
 
-lambda_handler("", "")
+def lambda_handler(event, context):
+    cep = event['queryStringParameters']['cep']
+    cep = str(cep).replace("-", "").replace(".", "")
+    get_coverage(cep)
+
+
+lambda_handler({
+    "queryStringParameters": {
+        "cep": "90480200"
+    }
+}, "")

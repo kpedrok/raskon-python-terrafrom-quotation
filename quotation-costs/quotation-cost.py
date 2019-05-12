@@ -1,9 +1,9 @@
 import json
 
 
-def search_costs(event):
-    global custo_peso
+def get_costs(event):
     event['peso'] = 3
+    custo_peso = []
     try:
         with open('quotation-costs\costs.json', encoding='utf-8') as f:
             data = json.load(f)
@@ -15,19 +15,17 @@ def search_costs(event):
                     custos.append(i)
             sort_custos = sorted(custos, key=lambda d: float(d["peso"]))
             custo_peso = sort_custos[0]
+            custos_totais.append(custo_peso)
     except:
-        print(event['transportadora'], "Preço não cadastrado")
+        pass
 
 
 def lambda_handler(event, context):
-    abragencias = event
+    global custos_totais
     custos_totais = []
+    abragencias = event
     for event in abragencias:
-        search_costs(event)
-        try:
-            custos_totais.append(custo_peso)
-        except:
-            continue
+        get_costs(event)
     print(json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False))
 
 
