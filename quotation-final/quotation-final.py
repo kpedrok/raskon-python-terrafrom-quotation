@@ -15,7 +15,7 @@ class DecimalEncoder(json.JSONEncoder):
 
 def get_coverage(cep):
     global abrang_tranps
-    with open('quotation-coverage\coverage.json', encoding='utf-8') as f:
+    with open('coverage.json', encoding='utf-8') as f:
         cep = int(cep)
         data = json.load(f)
         j = 0
@@ -30,7 +30,7 @@ def get_costs(event, peso_real):
     event['peso'] = float(peso_real)
     custo_peso = []
     try:
-        with open('quotation-costs\costs.json', encoding='utf-8') as f:
+        with open('costs.json', encoding='utf-8') as f:
             data = json.load(f)
             j = 0
             custos = []
