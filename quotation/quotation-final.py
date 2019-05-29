@@ -1,6 +1,16 @@
-import json
-import decimal
 import datetime
+import decimal
+import json
+import os
+
+import boto3
+from boto3.dynamodb.conditions import Key
+
+from quotation_rules import quotation_rules
+
+dynamodb = boto3.resource('dynamodb')
+
+table = dynamodb.Table('raskon-master-rules')
 
 
 class DecimalEncoder(json.JSONEncoder):
@@ -56,28 +66,28 @@ def lambda_handler(event, context):
     custos_totais = []
     for event in abrang_tranps:
         get_costs(event, peso_real)
-    values = {
-        "cep": cep,
-    }
+    # values = {
+    #     "cep": cep,
+    # }
     # custos_totais['cep'] = cep
     # custos_totais['peso_real'] = peso_real
     # custos_totais['timestamp'] = datetime.datetime.utcnow()
     custos_totais = sorted(custos_totais, key=lambda v: float(v["valor"]))
     print(cep, event['peso'])
-    print(json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False))
+    # print(json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False))
+
+    result = (quotation_rules({
+        "queryStringParameters": {
+            "tenant_id": "123"},
+        "body": (json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False)),
+    }, ""))
+
+    print(json.dumps(result, sort_keys=False, indent=4, ensure_ascii=False))
 
     return {
         "statusCode": 200,
         'headers': {
             'Access-Control-Allow-Origin': '*'
         },
-        "body": json.dumps(custos_totais, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
+        "body": json.dumps(result, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
     }
-
-
-# lambda_handler({
-#     "queryStringParameters": {
-#         "cep": "90480200",
-#         "peso": "3.2545"
-#     }
-# }, "")

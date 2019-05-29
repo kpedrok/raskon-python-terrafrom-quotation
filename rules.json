@@ -1,0 +1,104 @@
+[
+  {
+    "id": "123-1",
+    "tenant_id": "123",
+    "order": 1,
+    "description": "Curadoria/Inéditos - Loggi - Excluir - RS e MG",
+    "action": {
+      "type": "quotation_exclude_carrier_method"
+    },
+    "conditions": [
+      {
+        "operation": "IN",
+        "property": "metodo",
+        "values": [
+          "Loggi Standard"
+        ]
+      },
+      {
+        "operation": "IN",
+        "property": "uf",
+        "values": [
+          "RS",
+          "MG",
+          "DF",
+          "GO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "123-2",
+    "tenant_id": "123",
+    "order": 2,
+    "description": "(ALTERADO ADICIONA 2 PILA) Curadoria/Inéditos - Impresso - Fixar P - R$14,00 - NE",
+    "action": {
+      "type": "quotation_increase_price",
+      "value": 1.7
+    },
+    "conditions": [
+      {
+        "operation": "IN",
+        "property": "metodo",
+        "values": [
+          "Impresso Econômico"
+        ]
+      },
+      {
+        "operation": "IN",
+        "property": "uf",
+        "values": [
+          "AL",
+          "BA",
+          "CE",
+          "MA",
+          "PB",
+          "PE",
+          "PI",
+          "RN",
+          "SE"
+        ]
+      },
+      {
+        "operation": "IN",
+        "property": "sales_channel",
+        "values": [
+          "curadoria",
+          "ineditos"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "123-3",
+    "tenant_id": "123",
+    "order": 3,
+    "description": "Curadoria/Inéditos - Impresso - Fixar P - R$12,00 - SE e S",
+    "action": {
+      "type": "quotation_set_price",
+      "value": 12
+    },
+    "conditions": [
+      {
+        "operation": "IN",
+        "property": "metodo",
+        "values": [
+          "Impresso Econômico"
+        ]
+      },
+      {
+        "operation": "IN",
+        "property": "uf",
+        "values": [
+          "ES",
+          "MG",
+          "RJ",
+          "SP",
+          "PR",
+          "RS",
+          "SC"
+        ]
+      }
+    ]
+  }
+]

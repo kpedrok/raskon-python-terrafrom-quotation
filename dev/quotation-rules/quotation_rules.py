@@ -4,9 +4,10 @@ import os
 from boto3.dynamodb.conditions import Key
 import boto3
 
+
 dynamodb = boto3.resource('dynamodb')
 
-tabela = os.getenv('RULES_TABLE', 'rules')
+tabela = os.getenv('RULES_TABLE', 'raskon-master-rules')
 
 table = dynamodb.Table(tabela)
 
@@ -70,8 +71,8 @@ def handle_rules(rules, quotations):
     return result
 
 
-def lambda_handler(event, context):
-    # Paginar e ordenar pela propriedade order
+def quotation_rules(event, context):
+    # Paginar e ordenar pela propriedade order,
     rules = table.query(
         IndexName='tenant-index',
         KeyConditionExpression=Key('tenant_id').eq(event['queryStringParameters']['tenant_id']), ScanIndexForward=True)
@@ -79,6 +80,8 @@ def lambda_handler(event, context):
         rules['Items'],
         json.loads(event['body'])
     )
+    print(json.dumps(result, sort_keys=True,
+                     ensure_ascii=False, indent=4, cls=DecimalEncoder))
     return {
         "statusCode": 200,
         "headers": {
@@ -86,3 +89,40 @@ def lambda_handler(event, context):
         },
         "body": json.dumps(result, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
     }
+
+
+# quotation_rules({
+#     "queryStringParameters": {
+#         "tenant_id": "123"},
+#     "body": '''
+#     [
+#     {
+#         "transportadora": "Dialogo Logistica",
+#         "metodo": "Dialogo Standard",
+#         "uf": "RS",
+#         "tarifa": "CAPITAL",
+#         "peso": 4,
+#         "valor": 8.74,
+#         "prazo": 3
+#     },
+#     {
+#         "transportadora": "Transfolha",
+#         "metodo": "Transfolha Terrestre",
+#         "uf": "RS",
+#         "tarifa": "CAP",
+#         "peso": 4,
+#         "valor": 21.66,
+#         "prazo": 5
+#     },
+#     {
+#         "transportadora": "Loggi",
+#         "metodo": "Loggi Standard",
+#         "uf": "RS",
+#         "tarifa": "RS Zona 1",
+#         "peso": 3.5,
+#         "valor": 35.89,
+#         "prazo": 3
+#     }
+# ]
+# ''',
+# }, "")
