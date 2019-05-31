@@ -7,8 +7,7 @@ from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 
-tabela = os.getenv('RULES_TABLE', 'raskon-master-rules')
-
+tabela = os.getenv('RULES_TABLE', 'raskon-dev-rules')
 table = dynamodb.Table(tabela)
 
 

@@ -8,10 +8,6 @@ from boto3.dynamodb.conditions import Key
 
 from quotation_rules import quotation_rules
 
-dynamodb = boto3.resource('dynamodb')
-
-table = dynamodb.Table('raskon-master-rules')
-
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, o):
@@ -57,37 +53,91 @@ def get_costs(event, peso_real):
 
 
 def lambda_handler(event, context):
-    cep = event['queryStringParameters']['cep']
-    peso_real = event['queryStringParameters']['peso']
-    cep = str(cep).replace("-", "").replace(".", "")
-    peso_real = str(peso_real).replace("-", "").replace(",", ".")
-    get_coverage(cep)
-    global custos_totais
-    custos_totais = []
-    for event in abrang_tranps:
-        get_costs(event, peso_real)
-    # values = {
-    #     "cep": cep,
-    # }
-    # custos_totais['cep'] = cep
-    # custos_totais['peso_real'] = peso_real
-    # custos_totais['timestamp'] = datetime.datetime.utcnow()
-    custos_totais = sorted(custos_totais, key=lambda v: float(v["valor"]))
-    print(cep, event['peso'])
-    # print(json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False))
+    try:
+        # variaveis de entrada
+        cep_final = event['queryStringParameters']['cep_final']
+        uf_final = event['queryStringParameters']['uf_final']
+        cep_inicial = event['queryStringParameters']['cep_inicial']
+        uf_incial = event['queryStringParameters']['uf_incial']
+        grupo_venda = event['queryStringParameters']['grupo_venda']
+        grupo_sku = event['queryStringParameters']['grupo_sku']
+        grupo_cliente = event['queryStringParameters']['grupo_cliente']
+        peso_real = event['queryStringParameters']['peso_real']
+        comprimento = event['queryStringParameters']['comprimento']
+        largura = event['queryStringParameters']['largura']
+        altura = event['queryStringParameters']['altura']
+        valor_nota_fiscal = event['queryStringParameters']['valor_nota_fiscal']
 
-    result = (quotation_rules({
-        "queryStringParameters": {
-            "tenant_id": "123"},
-        "body": (json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False)),
-    }, ""))
+        # calculo do peso final
+        fator_peso = {
+            'aereo': 166.7,
+            'rodoviario': 300,
+            'maritmo': 1000,
+        }
 
-    print(json.dumps(result, sort_keys=False, indent=4, ensure_ascii=False))
+        peso_cubado = float(comprimento) * float(largura) * \
+            float(altura) * fator_peso['aereo'] / 1000000
+        if float(peso_cubado) > float(peso_real):
+            peso_final = peso_cubado
+        else:
+            peso_final = peso_real
 
-    return {
-        "statusCode": 200,
-        'headers': {
-            'Access-Control-Allow-Origin': '*'
-        },
-        "body": json.dumps(result, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
+        # formatar cep
+        cep = str(cep_final).replace("-", "").replace(".", "")
+
+        # buscar transportadoras que atendem o cep
+        get_coverage(cep)
+
+        # buscar custos
+        global custos_totais
+        custos_totais = []
+        for event in abrang_tranps:
+            get_costs(event, peso_final)
+        custos_totais = sorted(custos_totais, key=lambda v: float(v["valor"]))
+
+        # Aplicar regras de cotação
+        result = (quotation_rules({
+            "queryStringParameters": {
+                "tenant_id": "123"},
+            "body": (json.dumps(custos_totais, sort_keys=False, indent=4, ensure_ascii=False)),
+        }, ""))
+
+        # Imprimir input e resultados
+        print(cep, event['peso'])
+        print(json.dumps(result, sort_keys=False, indent=4, ensure_ascii=False))
+
+        # Retornar API
+        return {
+            "statusCode": 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
+            "body": json.dumps(result, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
+        }
+    except Exception as e:
+        print(e)
+        return {
+            "statusCode": 400,
+            'headers': {
+                'Access-Control-Allow-Origin': '*'
+            },
+            "body": str(e),
+        }
+
+
+lambda_handler({
+    "queryStringParameters": {
+        "cep_final": "90480200",
+        "uf_final": "SP",
+        "uf_incial": "RS",
+        "cep_inicial": "90220-060",
+        "grupo_cliente": "padrao",
+        "grupo_sku": "padrao",
+        "grupo_venda": "curadoria",
+        "comprimento": "20.6",
+        "largura": "30.3",
+        "altura": "30.2",
+        "peso_real": "0.8",
+        "valor_nota_fiscal": "64.90"
     }
+}, "")
