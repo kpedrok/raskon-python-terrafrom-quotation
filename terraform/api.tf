@@ -20,7 +20,7 @@ module "raskon_quotation_GET" {
   source              = "github.com/fernandoruaro/serverless.tf//api_gateway/method/lambda"
   rest_api_id         = "${aws_api_gateway_rest_api.api.id}"
   resource_id         = "${module.raskon_quotation.id}"
-  http_request_method = "GET"
+  http_request_method = "ANY"
   lambda_invoke_arn   = "${module.lambda_raskon_quotation.lambda_invoke_arn}"
 }
 
