@@ -31,8 +31,8 @@ module "lambda_raskon_input_rule" {
   handler       = "input_rule.lambda_handler"
   function_name = "${local.prefix_dash}input-rules"
   runtime       = "python3.7"
-  timeout       = "15"
-  memory_size   = "128"
+  timeout       = "5"
+  memory_size   = "320"
 
   variables = "${local.variables}"
 
