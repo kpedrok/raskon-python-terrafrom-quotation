@@ -53,20 +53,22 @@ def get_costs(event, peso_real):
 
 
 def lambda_handler(event, context):
+    erro = event
+    event = json.loads(event['body'], parse_float=decimal.Decimal)
     try:
         # variaveis de entrada
-        cep_final = event['queryStringParameters']['cep_final']
-        uf_final = event['queryStringParameters']['uf_final']
-        cep_inicial = event['queryStringParameters']['cep_inicial']
-        uf_incial = event['queryStringParameters']['uf_incial']
-        grupo_venda = event['queryStringParameters']['grupo_venda']
-        grupo_sku = event['queryStringParameters']['grupo_sku']
-        grupo_cliente = event['queryStringParameters']['grupo_cliente']
-        peso_real = event['queryStringParameters']['peso_real']
-        comprimento = event['queryStringParameters']['comprimento']
-        largura = event['queryStringParameters']['largura']
-        altura = event['queryStringParameters']['altura']
-        valor_nota_fiscal = event['queryStringParameters']['valor_nota_fiscal']
+        cep_final = event['cep_final']
+        uf_final = event['uf_final']
+        cep_inicial = event['cep_inicial']
+        uf_incial = event['uf_incial']
+        grupo_venda = event['grupo_venda']
+        grupo_sku = event['grupo_sku']
+        grupo_cliente = event['grupo_cliente']
+        peso_real = event['peso_real']
+        comprimento = event['comprimento']
+        largura = event['largura']
+        altura = event['altura']
+        valor_nota_fiscal = event['valor_nota_fiscal']
 
         # calculo do peso final
         fator_peso = {
@@ -115,7 +117,7 @@ def lambda_handler(event, context):
             "body": json.dumps(result, sort_keys=True,  ensure_ascii=False, indent=4, cls=DecimalEncoder),
         }
     except Exception as e:
-        print(e)
+        print(e, erro)
         return {
             "statusCode": 400,
             'headers': {
@@ -125,19 +127,6 @@ def lambda_handler(event, context):
         }
 
 
-lambda_handler({
-    "queryStringParameters": {
-        "cep_final": "90480200",
-        "uf_final": "SP",
-        "uf_incial": "RS",
-        "cep_inicial": "90220-060",
-        "grupo_cliente": "padrao",
-        "grupo_sku": "padrao",
-        "grupo_venda": "curadoria",
-        "comprimento": "20.6",
-        "largura": "30.3",
-        "altura": "30.2",
-        "peso_real": "0.8",
-        "valor_nota_fiscal": "64.90"
-    }
-}, "")
+# lambda_handler({'resource': '/quote', 'path': '/quote', 'httpMethod': 'POST', 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7', 'cache-control': 'no-cache', 'CloudFront-Forwarded-Proto': 'https', 'CloudFront-Is-Desktop-Viewer': 'true', 'CloudFront-Is-Mobile-Viewer': 'false', 'CloudFront-Is-SmartTV-Viewer': 'false', 'CloudFront-Is-Tablet-Viewer': 'false', 'CloudFront-Viewer-Country': 'BR', 'content-type': 'application/json', 'Host': 'f1a6f3s2ec.execute-api.us-east-1.amazonaws.com', 'origin': 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo', 'postman-token': 'fab09b4f-0559-6522-14d4-c2c2f45cba1c', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36', 'Via': '2.0 cc6f1d15450acb34cdcc811502bdb02d.cloudfront.net (CloudFront)', 'X-Amz-Cf-Id': 'E2r3WfH33lEArtSMi23k--cPP6Rhm48Nuw6fpgI4r6rUrhHYxzWjFw==', 'X-Amzn-Trace-Id': 'Root=1-5cf55581-62ea5c3cb29f56947433046a', 'X-Forwarded-For': '179.219.72.166, 52.46.43.164', 'X-Forwarded-Port': '443', 'X-Forwarded-Proto': 'https', 'x-postman-interceptor-id': '8c263389-2beb-b3d6-9b58-cd55bb44b367'}, 'multiValueHeaders': {'Accept': ['*/*'], 'Accept-Encoding': ['gzip, deflate, br'], 'Accept-Language': ['pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'], 'cache-control': ['no-cache'], 'CloudFront-Forwarded-Proto': ['https'], 'CloudFront-Is-Desktop-Viewer': ['true'], 'CloudFront-Is-Mobile-Viewer': ['false'], 'CloudFront-Is-SmartTV-Viewer': ['false'], 'CloudFront-Is-Tablet-Viewer': ['false'], 'CloudFront-Viewer-Country': ['BR'], 'content-type': ['application/json'], 'Host': ['f1a6f3s2ec.execute-api.us-east-1.amazonaws.com'], 'origin': ['chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo'], 'postman-token': ['fab09b4f-0559-6522-14d4-c2c2f45cba1c'], 'User-Agent': [
+#                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'], 'Via': ['2.0 cc6f1d15450acb34cdcc811502bdb02d.cloudfront.net (CloudFront)'], 'X-Amz-Cf-Id': ['E2r3WfH33lEArtSMi23k--cPP6Rhm48Nuw6fpgI4r6rUrhHYxzWjFw=='], 'X-Amzn-Trace-Id': ['Root=1-5cf55581-62ea5c3cb29f56947433046a'], 'X-Forwarded-For': ['179.219.72.166, 52.46.43.164'], 'X-Forwarded-Port': ['443'], 'X-Forwarded-Proto': ['https'], 'x-postman-interceptor-id': ['8c263389-2beb-b3d6-9b58-cd55bb44b367']}, 'queryStringParameters': None, 'multiValueQueryStringParameters': None, 'pathParameters': None, 'stageVariables': None, 'requestContext': {'resourceId': 'j9k0mk', 'resourcePath': '/quote', 'httpMethod': 'POST', 'extendedRequestId': 'atpMQHgkoAMF_lQ=', 'requestTime': '03/Jun/2019:17:14:41 +0000', 'path': '/prod/quote', 'accountId': '301587852292', 'protocol': 'HTTP/1.1', 'stage': 'prod', 'domainPrefix': 'f1a6f3s2ec', 'requestTimeEpoch': 1559582081680, 'requestId': '134531ff-8623-11e9-a31d-d98698306811', 'identity': {'cognitoIdentityPoolId': None, 'accountId': None, 'cognitoIdentityId': None, 'caller': None, 'sourceIp': '179.219.72.166', 'principalOrgId': None, 'accessKey': None, 'cognitoAuthenticationType': None, 'cognitoAuthenticationProvider': None, 'userArn': None, 'userAgent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36', 'user': None}, 'domainName': 'f1a6f3s2ec.execute-api.us-east-1.amazonaws.com', 'apiId': 'f1a6f3s2ec'},
+#                'body': '{\n "cep_final": "90480200",\n "uf_final": "SP",\n "uf_incial": "RS",\n "cep_inicial": "90220-060",\n "grupo_cliente": "padrao",\n "grupo_sku": "padrao",\n "grupo_venda": "curadoria",\n "comprimento": "20.6",\n "largura": "30.3",\n "altura": "30.2",\n "peso_real": "0.8",\n "valor_nota_fiscal": "64.90"\n}', 'isBase64Encoded': False}, "")
